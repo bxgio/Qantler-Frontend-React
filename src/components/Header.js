@@ -8,12 +8,23 @@ import SearchIcon from '@mui/icons-material/Search';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Slide from '@mui/material/Slide';
 import InputBase from '@mui/material/InputBase';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 const Header = () => {
   const [isSearchOpen, setSearchOpen] = useState(false);
+  const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
 
   const handleSearchIconClick = () => {
     setSearchOpen(!isSearchOpen);
+  };
+
+  const handleNotificationClick = (event) => {
+    setNotificationAnchorEl(event.currentTarget);
+  };
+
+  const handleNotificationClose = () => {
+    setNotificationAnchorEl(null);
   };
 
   return (
@@ -50,9 +61,19 @@ const Header = () => {
           </Slide>
         </div>
         {/* Notification Bell Icon */}
-        <IconButton color="inherit" aria-label="notifications">
+        <IconButton color="inherit" aria-label="notifications" onClick={handleNotificationClick}>
           <NotificationsIcon />
         </IconButton>
+        {/* Notification Dropdown */}
+        <Menu
+          anchorEl={notificationAnchorEl}
+          open={Boolean(notificationAnchorEl)}
+          onClose={handleNotificationClose}
+        >
+          <MenuItem onClick={handleNotificationClose}>Notification 1</MenuItem>
+          <MenuItem onClick={handleNotificationClose}>Notification 2</MenuItem>
+          <MenuItem onClick={handleNotificationClose}>Notification 3</MenuItem>
+        </Menu>
       </Toolbar>
     </AppBar>
   );
