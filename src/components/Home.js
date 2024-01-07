@@ -17,22 +17,6 @@ import Link from '@mui/material/Link';
 import Skeleton from '@mui/material/Skeleton';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-const cards = [1, 2, 3, 4, 5, 6];
-
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function Home() {
@@ -46,14 +30,54 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
+  const cardData = [
+    {
+      heading: 'BPA WITH K2 AND NINTEX',
+      image: 'https://source.unsplash.com/random?tech support',
+    },
+    {
+      heading: 'OFFICE AUTOMATION WITH OFFICE 365',
+      image: 'https://source.unsplash.com/random?office',
+    },
+    {
+      heading: 'LOW CODE PLATFORMS',
+      image: 'https://source.unsplash.com/random?coding',
+    },
+    {
+      heading: 'ROBOTIC AUTOMATION PROCESS',
+      image: 'https://source.unsplash.com/random?robots',
+    },
+    {
+      heading: 'BUSINESS INTELLIGENCE',
+      image: 'https://source.unsplash.com/random?insights',
+    },
+    {
+      heading: 'MOBILE AND WEB APPLICATIONS',
+      image: 'https://source.unsplash.com/random?software',
+    },
+  ];
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <CssBaseline />
+      <AppBar position="sticky" color="primary">
+        <Toolbar>
+          <Typography variant="h6" color="inherit" noWrap>
+            Our Specialized Services
+          </Typography>
+        </Toolbar>
+      </AppBar>
       <main>
         <Container sx={{ py: 8 }} maxWidth="md">
+          <Typography variant="h2" component="h1" gutterBottom>
+            Welcome to Qantler Technologies
+          </Typography>
+          <Typography variant="h5" color="text.secondary" paragraph>
+            Discover the magic of our Consultancy with futuristic technological services
+          </Typography>
           <Grid container spacing={4}>
-            {cards.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
+            {cardData.map((card, index) => (
+              <Grid item key={index} xs={12} sm={6} md={4}>
                 <Card
                   sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
                 >
@@ -61,7 +85,7 @@ export default function Home() {
                     <Skeleton
                       variant="rectangular"
                       sx={{
-                        paddingTop: '56.25%', // 16:9 aspect ratio
+                        paddingTop: '56.25%',
                       }}
                     />
                   ) : (
@@ -70,7 +94,7 @@ export default function Home() {
                       sx={{
                         paddingTop: '56.25%',
                       }}
-                      image="https://source.unsplash.com/random?wallpapers"
+                      image={card.image}
                     />
                   )}
                   <CardContent sx={{ flexGrow: 1 }}>
@@ -82,11 +106,10 @@ export default function Home() {
                     ) : (
                       <>
                         <Typography gutterBottom variant="h5" component="h2">
-                          Heading
+                          {card.heading}
                         </Typography>
                         <Typography>
-                          This is a media card. You can use this section to describe the
-                          content.
+                          Explore our {card.heading.toLowerCase()}. With Qantler Technology.
                         </Typography>
                       </>
                     )}
@@ -95,20 +118,18 @@ export default function Home() {
               </Grid>
             ))}
           </Grid>
+          <Box sx={{ mt: 5 }}>
+            <Typography variant="body2" color="text.secondary" align="center">
+              {'Copyright © '}
+              <Link color="inherit" href="https://mui.com/">
+                Your Website
+              </Link>{' '}
+              {new Date().getFullYear()}
+              {'.'}
+            </Typography>
+          </Box>
         </Container>
       </main>
-      {/* Footer */}
-      <Box sx={{ mt: 5 }}>
-        <Typography variant="body2" color="text.secondary" align="center">
-          {'Copyright © '}
-          <Link color="inherit" href="https://mui.com/">
-            Your Website
-          </Link>{' '}
-          {new Date().getFullYear()}
-          {'.'}
-        </Typography>
-      </Box>
-      {/* End footer */}
     </ThemeProvider>
   );
 }
