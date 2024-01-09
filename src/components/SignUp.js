@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,32 +12,54 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-// TODO remove, this demo shouldn't need to reset the theme.
+import axios from 'axios';
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
+  const [registrationStatus, setRegistrationStatus] = useState({
+    success: false,
+    message: '',
+  });
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    // Validate form fields
+    const firstName = data.get('firstName');
+    const lastName = data.get('lastName');
+    const email = data.get('email');
+    const password = data.get('password');
+
+    if (!firstName || !lastName || !email || !password) {
+      window.alert('Please fill in all required fields.');
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:4100/register", {
+        firstName,
+        lastName,
+        email,
+        password,
+      });
+
+      if (response.data === 'Email already exists') {
+        window.alert('Email is already registered. Please use a different email.');
+      } else {
+        window.alert('User registered successfully');
+        setRegistrationStatus({
+          success: true,
+          
+        });
+      }
+    } catch (error) {
+      window.alert("Error during registration,Email already Exists:", error.message);
+      setRegistrationStatus({
+        success: false,
+      });
+    }
   };
 
   return (
@@ -124,9 +146,17 @@ export default function SignUp() {
                 </Link>
               </Grid>
             </Grid>
+            {registrationStatus.message && (
+              <Typography
+                variant="body2"
+                color={registrationStatus.success ? 'success' : 'error'}
+                align="center"
+              >
+                {registrationStatus.message}
+              </Typography>
+            )}
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
   );
