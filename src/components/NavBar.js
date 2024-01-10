@@ -4,13 +4,19 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import About from './About';
 import Contact from './Contact';
-import  Home  from './Home';
-
-
+import Home from './Home';
+import HomeIcon from '@mui/icons-material/Home';
+import SignInIcon from '@mui/icons-material/Person';
+import AboutIcon from '@mui/icons-material/Info';
+import ContactIcon from '@mui/icons-material/ContactMail';
+import RegisterIcon from '@mui/icons-material/HowToReg';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -47,10 +53,23 @@ function a11yProps(index) {
 
 export default function VerticalTabs() {
   const [value, setValue] = React.useState(0);
+  const [isNavBarHidden, setIsNavBarHidden] = React.useState(false);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const toggleNavBar = () => {
+    setIsNavBarHidden(!isNavBarHidden);
+  };
+
+  const tabItems = [
+    { label: 'Home', icon: <HomeIcon /> },
+    { label: 'SignIn', icon: <SignInIcon /> },
+    { label: 'About', icon: <AboutIcon /> },
+    { label: 'Contact', icon: <ContactIcon /> },
+    { label: 'Register', icon: <RegisterIcon /> },
+  ];
 
   return (
     <Box
@@ -60,45 +79,51 @@ export default function VerticalTabs() {
         backgroundColor: '#f5f5f5',
       }}
     >
-      <Tabs
-        orientation="vertical"
-        variant="scrollable"
-        value={value}
-        onChange={handleChange}
-        aria-label="Vertical tabs example"
-        sx={{
-          borderRight: 1,
-          borderColor: 'divider',
-          backgroundColor: 'white',
-          color: 'white',
-        }}
-      >  <Tab label="Home" {...a11yProps(0)} />
-        <Tab label="SignIn" {...a11yProps(1)} />
-        <Tab label="About" {...a11yProps(2)} />
-        <Tab label="Contact" {...a11yProps(3)} />
-        <Tab label="Register" {...a11yProps(4)} />
-      </Tabs>
+      {!isNavBarHidden && (
+        <Tabs
+          orientation="vertical"
+          variant="scrollable"
+          value={value}
+          onChange={handleChange}
+          aria-label="Vertical tabs example"
+          sx={{
+            borderRight: 1,
+            borderColor: 'divider',
+            backgroundColor: 'white',
+            color: 'white',
+          }}
+        >
+          {tabItems.map((tab, index) => (
+            <Tab key={index} label={tab.label} icon={tab.icon} {...a11yProps(index)} />
+          ))}
+        </Tabs>
+      )}
       <Box
         sx={{
           flex: 1,
           overflowY: 'auto',
           padding: 3,
         }}
-      ><TabPanel value={value} index={0}>
-      <Home />
-    </TabPanel>
-        <TabPanel value={value} index={1}>
-          <SignIn />
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <About/>
-        </TabPanel>
-        <TabPanel value={value} index={3}>
-          <Contact/>
-        </TabPanel>
-        <TabPanel value={value} index={4}>
-          <SignUp/>
-        </TabPanel>
+      >
+        {!isNavBarHidden && (
+          <IconButton onClick={toggleNavBar} sx={{ position: 'absolute', top: 10, left: 10 }}>
+           <MenuIcon/>
+          </IconButton>
+        )}
+        {isNavBarHidden && (
+          <IconButton onClick={toggleNavBar} sx={{ position: 'absolute', top: 10, left: 10 }}>
+            <MenuIcon />
+          </IconButton>
+        )}
+        {tabItems.map((tab, index) => (
+          <TabPanel key={index} value={value} index={index}>
+            {tab.label === 'Home' && <Home />}
+            {tab.label === 'SignIn' && <SignIn />}
+            {tab.label === 'About' && <About />}
+            {tab.label === 'Contact' && <Contact />}
+            {tab.label === 'Register' && <SignUp />}
+          </TabPanel>
+        ))}
       </Box>
     </Box>
   );

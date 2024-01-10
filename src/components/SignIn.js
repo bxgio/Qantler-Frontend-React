@@ -47,12 +47,15 @@ export default function SignIn() {
 
       if (response.ok) {
         // Login successful, handle success logic (e.g., redirect)
+        window.alert('Login successful');
         console.log('Login successful');
       } else {
         // Login failed, handle error logic (e.g., show error message)
-        console.error('Login failed');
+        window.alert('Login Failed!');
+        console.error('Login failed!');
       }
     } catch (error) {
+      window.alert('Error during logging in!')
       console.error('Error during login:', error);
     }
   };
