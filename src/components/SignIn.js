@@ -26,18 +26,35 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    try {
+      const formData = new FormData(event.currentTarget);
+      const email = formData.get('email');
+      const password = formData.get('password');
+
+      const response = await fetch("http://localhost:4100/login", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.ok) {
+        // Login successful, handle success logic (e.g., redirect)
+        console.log('Login successful');
+      } else {
+        // Login failed, handle error logic (e.g., show error message)
+        console.error('Login failed');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
   };
 
   return (

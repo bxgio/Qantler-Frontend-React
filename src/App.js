@@ -15,6 +15,7 @@ const App = () => {
        <Footer/>
        <Copyright/>
       </div>
+      
     </Router>
   );
 };
